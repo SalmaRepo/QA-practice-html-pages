@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Locator Practice App</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --border: #334155;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-dark: #0284c7;
+    --success: #22c55e;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  header .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    margin-left: 24px;
+    font-size: 14px;
+  }
+  nav a:hover { color: var(--accent); }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 20px 80px; }
+  section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  section h2 { margin-top: 0; font-size: 16px; color: var(--accent); }
+  label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+  input, select, textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: #0b1220;
+    color: var(--text);
+    font-size: 14px;
+  }
+  button {
+    background: var(--accent-dark);
+    color: white;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 14px;
+    margin-right: 8px;
+  }
+  button:hover { background: var(--accent); }
+  button.danger { background: var(--danger); }
+  button.ghost { background: transparent; border: 1px solid var(--border); }
+  .status { margin-top: 12px; font-size: 14px; }
+  .status.success { color: var(--success); }
+  .status.hidden { display: none; }
+  .badge {
+    display: inline-block;
+    background: #0b1220;
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-right: 8px;
+  }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  ul.results { padding-left: 18px; }
+  ul.results li { display: none; font-size: 14px; margin-bottom: 4px; }
+  ul.results li.visible { display: list-item; }
+  img.logo { height: 28px; }
+  .row { display: flex; align-items: center; gap: 8px; }
+  .checkbox-row { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .checkbox-row input { width: auto; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="https://playwright.dev/img/playwright-logo.svg" alt="Playwright logo" class="logo">
+    Locator Practice
+  </div>
+  <nav>
+    <a href="#" role="link">Dashboard</a>
+    <a href="#" role="link">Reports</a>
+    <a href="#" role="link">Settings</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ROLE: button + status text change -->
+  <section id="signin-section">
+    <h2>1. Role locator — Sign In button</h2>
+    <p id="signin-status">You are signed out.</p>
+    <button id="signin-btn" role="button">Sign In</button>
+    <button id="signout-btn" role="button" style="display:none;">Sign Out</button>
+  </section>
+
+  <!-- LABEL locator: login-style form -->
+  <section>
+    <h2>2. Label locator — Registration form</h2>
+    <label for="fullname">Full Name</label>
+    <input type="text" id="fullname" title="Enter your legal full name">
+
+    <label for="email">Email Address</label>
+    <input type="email" id="email">
+
+    <label for="country">Country</label>
+    <select id="country">
+      <option value="">Select a country</option>
+      <option value="in">India</option>
+      <option value="de">Germany</option>
+      <option value="us">United States</option>
+    </select>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="terms">
+      <label for="terms" style="margin:0;">I agree to the Terms and Conditions</label>
+    </div>
+
+    <button id="register-btn">Register</button>
+    <p id="register-status" class="status hidden"></p>
+  </section>
+
+  <!-- PLACEHOLDER locator -->
+  <section>
+    <h2>3. Placeholder locator — Search & Feedback</h2>
+    <label>Search products</label>
+    <input type="text" id="search-box" placeholder="Search products...">
+    <ul class="results">
+      <li id="result-laptop">Laptop Stand — $29</li>
+      <li id="result-mouse">Wireless Mouse — $19</li>
+      <li id="result-keyboard">Mechanical Keyboard — $79</li>
+    </ul>
+
+    <label>Feedback</label>
+    <textarea id="feedback-box" placeholder="Tell us what you think..." rows="3"></textarea>
+    <button id="feedback-submit">Submit Feedback</button>
+    <p id="feedback-status" class="status hidden"></p>
+  </section>
+
+  <!-- ALT TEXT locator -->
+  <section>
+    <h2>4. Alt text locator — Product gallery</h2>
+    <div class="row">
+      <img src="https://playwright.dev/img/playwright-logo.svg" alt="Product thumbnail A" height="40">
+      <img src="https://playwright.dev/img/playwright-logo.svg" alt="Product thumbnail B" height="40">
+      <img src="https://playwright.dev/img/playwright-logo.svg" alt="Empty cart illustration" height="40">
+    </div>
+  </section>
+
+  <!-- TITLE locator -->
+  <section>
+    <h2>5. Title locator — Stat boxes</h2>
+    <span class="badge" title="Total number of registered users">Users: 1,204</span>
+    <span class="badge" title="Total number of failed test runs today">Failures: 7</span>
+    <span class="badge" title="Average build duration in minutes">Avg Build: 4.2m</span>
+  </section>
+
+  <!-- TESTID locator -->
+  <section>
+    <h2>6. TestId locator — Pricing cards</h2>
+    <div class="row">
+      <div data-testid="plan-basic" class="badge">Basic — $0</div>
+      <div data-testid="plan-pro" class="badge" style="cursor:pointer;">Pro — $19</div>
+      <div data-testid="plan-enterprise" class="badge">Enterprise — Contact us</div>
+    </div>
+    <p id="plan-status" class="status hidden"></p>
+  </section>
+
+  <!-- TEXT locator + table -->
+  <section>
+    <h2>7. Text locator — Order table</h2>
+    <table>
+      <tr><th>Order ID</th><th>Status</th></tr>
+      <tr><td>ORD-1001</td><td>Shipped</td></tr>
+      <tr><td>ORD-1002</td><td>Processing</td></tr>
+      <tr><td>ORD-1003</td><td>Cancelled</td></tr>
+    </table>
+  </section>
+
+  <!-- DELETE / danger button for confirmation dialog practice -->
+  <section>
+    <h2>8. Role locator — Delete with confirmation</h2>
+    <button id="delete-btn" class="danger" role="button">Delete Account</button>
+    <div id="confirm-box" style="display:none; margin-top:14px;">
+      <p>Are you sure? This cannot be undone.</p>
+      <button id="confirm-yes" role="button">Yes, Delete</button>
+      <button id="confirm-no" class="ghost" role="button">Cancel</button>
+    </div>
+    <p id="delete-status" class="status hidden"></p>
+  </section>
+
+</main>
+
+<script>
+  // 1. Sign in / out toggle
+  const signinBtn = document.getElementById('signin-btn');
+  const signoutBtn = document.getElementById('signout-btn');
+  const signinStatus = document.getElementById('signin-status');
+  signinBtn.onclick = () => {
+    signinStatus.textContent = 'Welcome back, Salma! 👋';
+    signinBtn.style.display = 'none';
+    signoutBtn.style.display = 'inline-block';
+  };
+  signoutBtn.onclick = () => {
+    signinStatus.textContent = 'You are signed out.';
+    signinBtn.style.display = 'inline-block';
+    signoutBtn.style.display = 'none';
+  };
+
+  // 2. Registration form
+  document.getElementById('register-btn').onclick = () => {
+    const name = document.getElementById('fullname').value;
+    const email = document.getElementById('email').value;
+    const terms = document.getElementById('terms').checked;
+    const status = document.getElementById('register-status');
+    status.classList.remove('hidden');
+    if (!name || !email) {
+      status.textContent = 'Please fill in all required fields.';
+      status.classList.remove('success');
+    } else if (!terms) {
+      status.textContent = 'You must agree to the Terms and Conditions.';
+      status.classList.remove('success');
+    } else {
+      status.textContent = `Registration successful for ${name}!`;
+      status.classList.add('success');
+    }
+  };
+
+  // 3. Search filter
+  document.getElementById('search-box').addEventListener('input', (e) => {
+    const val = e.target.value.toLowerCase();
+    document.getElementById('result-laptop').classList.toggle('visible', val.includes('lap'));
+    document.getElementById('result-mouse').classList.toggle('visible', val.includes('mou'));
+    document.getElementById('result-keyboard').classList.toggle('visible', val.includes('key'));
+  });
+
+  document.getElementById('feedback-submit').onclick = () => {
+    const status = document.getElementById('feedback-status');
+    status.classList.remove('hidden');
+    status.classList.add('success');
+    status.textContent = 'Thanks for your feedback!';
+  };
+
+  // 6. Plan selection
+  document.querySelectorAll('[data-testid^="plan-"]').forEach(el => {
+    el.onclick = () => {
+      const status = document.getElementById('plan-status');
+      status.classList.remove('hidden');
+      status.classList.add('success');
+      status.textContent = `You selected: ${el.textContent}`;
+    };
+  });
+
+  // 8. Delete confirmation flow
+  document.getElementById('delete-btn').onclick = () => {
+    document.getElementById('confirm-box').style.display = 'block';
+  };
+  document.getElementById('confirm-yes').onclick = () => {
+    document.getElementById('confirm-box').style.display = 'none';
+    const status = document.getElementById('delete-status');
+    status.classList.remove('hidden');
+    status.textContent = 'Account deleted.';
+  };
+  document.getElementById('confirm-no').onclick = () => {
+    document.getElementById('confirm-box').style.display = 'none';
+  };
+</script>
+
+</body>
+</html>
