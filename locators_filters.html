@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Playwright Filter Locators Practice</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; background: #0f1117; color: #e6e6e6; }
+  h1 { color: #7ac6ff; }
+  h2 { color: #ffd479; border-bottom: 1px solid #333; padding-bottom: 6px; margin-top: 50px; }
+  .card { background: #1a1d27; border: 1px solid #2c2f3a; border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+  ul { list-style: none; padding: 0; }
+  li { padding: 10px; border-bottom: 1px solid #2c2f3a; display: flex; justify-content: space-between; align-items: center; }
+  li:last-child { border-bottom: none; }
+  button, a.btn-link { background: #2d6cdf; color: white; border: none; padding: 6px 14px; border-radius: 5px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; }
+  button.secondary { background: #444a5a; }
+  .stock-in { color: #6fd66f; }
+  .stock-out { color: #ff6b6b; }
+  .tag { font-size: 12px; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+  .done { background: #234d33; color: #6fd66f; }
+  .pending { background: #4d3d23; color: #ffb86b; }
+  .in-progress { background: #23374d; color: #6fb8ff; }
+  .fruit-icon { font-size: 20px; margin-right: 6px; }
+  img.thumb { width: 24px; height: 24px; vertical-align: middle; margin-right: 8px; }
+</style>
+</head>
+<body>
+
+<h1>Playwright Filter Locators Practice</h1>
+<p>Practice <code>.filter()</code>, <code>.and()</code>, <code>.or()</code>, <code>has</code>, <code>hasNot</code>, <code>hasText</code>, and <code>hasNotText</code> across realistic UI patterns.</p>
+
+<!-- SECTION 1: Products in two separate cards -->
+<h2>1. Products — Card A</h2>
+<div class="card">
+  <ul role="list">
+    <li><span>Product 1 <span class="stock-in">In stock (12)</span></span><button>Add to cart</button></li>
+    <li><span>Product 2 <span class="stock-out">Out of stock</span></span><button disabled>Add to cart</button></li>
+    <li><span>Product 3 <span class="stock-in">In stock (4)</span></span><button>Add to cart</button></li>
+  </ul>
+</div>
+
+<h2>1b. Products — Card B</h2>
+<div class="card">
+  <ul role="list">
+    <li><span>Product 4 <span class="stock-out">Out of stock</span></span><button disabled>Add to cart</button></li>
+    <li><span>Product 5 <span class="stock-in">In stock (9)</span></span><button>Add to cart</button></li>
+    <li><span>Product 6 <span class="stock-in">In stock (2)</span></span><button>Add to cart</button></li>
+    <li><span>Product 7 <span class="stock-out">Out of stock</span></span><button disabled>Add to cart</button></li>
+  </ul>
+</div>
+
+<!-- SECTION 2: Fruits with test-ids -->
+<h2>2. Fruit Basket (data-testid)</h2>
+<div class="card">
+  <ul>
+    <li data-testid="apple"><span class="fruit-icon">🍎</span> apple — $1.20</li>
+    <li data-testid="banana"><span class="fruit-icon">🍌</span> banana — $0.50</li>
+    <li data-testid="orange"><span class="fruit-icon">🍊</span> orange — $1.00</li>
+    <li data-testid="grape"><span class="fruit-icon">🍇</span> grape — $2.30</li>
+    <li data-testid="mango"><span class="fruit-icon">🥭</span> mango — $1.80</li>
+    <li data-testid="kiwi"><span class="fruit-icon">🥝</span> kiwi — $1.50</li>
+  </ul>
+</div>
+
+<!-- SECTION 3: Users with greeting buttons -->
+<h2>3. Team Directory</h2>
+<div class="card">
+  <ul role="list">
+    <li><span>John Carter — Engineer</span><button>Say hello</button></li>
+    <li><span>Mary Adams — Designer</span><button class="secondary">Say goodbye</button></li>
+    <li><span>Steve Miller — QA</span><button>Say hello</button></li>
+    <li><span>Anna Lopez — PM</span><button class="secondary">Say goodbye</button></li>
+    <li><span>John Carter's Manager — Lead</span><button class="secondary">Say goodbye</button></li>
+  </ul>
+</div>
+
+<!-- SECTION 4: Buttons with title attributes for .and() practice -->
+<h2>4. Newsletter Widgets (mixed attributes)</h2>
+<div class="card">
+  <ul>
+    <li>Weekly Digest <button title="Subscribe">Subscribe</button></li>
+    <li>Product Updates <button title="Subscribe now">Subscribe</button></li>
+    <li>Security Alerts <a class="btn-link" title="Subscribe" href="#">Subscribe</a></li>
+    <li>Promotions <span title="Subscribe">Not a button — just styled text</span></li>
+    <li>Daily News <button title="Subscribe">Subscribe</button></li>
+  </ul>
+</div>
+
+<!-- SECTION 5: Tasks with status + action buttons -->
+<h2>5. Task Board</h2>
+<div class="card">
+  <ul role="list">
+    <li><span>Fix login bug <span class="tag done">done</span></span><button>details</button></li>
+    <li><span>Update docs <span class="tag pending">pending</span></span><button class="secondary">edit</button></li>
+    <li><span>Refactor auth module <span class="tag done">done</span></span><button>details</button></li>
+    <li><span>Write API tests <span class="tag in-progress">in-progress</span></span><button class="secondary">edit</button></li>
+    <li><span>Deploy to staging <span class="tag pending">pending</span></span><button class="secondary">edit</button></li>
+  </ul>
+</div>
+
+<!-- SECTION 6: .or() practice — two different ways to log in -->
+<h2>6. Auth Entry Points</h2>
+<div class="card">
+  <p>Old header (legacy): <button id="login-btn">Login</button></p>
+  <p>New header (redesign): <a class="btn-link" id="signin-link" href="#">Sign in</a></p>
+</div>
+
+<!-- SECTION 7: has() / hasNot() — list items containing an image vs not -->
+<h2>7. Notifications Feed</h2>
+<div class="card">
+  <ul role="list">
+    <li><img class="thumb" src="https://via.placeholder.com/24" alt="avatar"> Mary commented on your post</li>
+    <li>System: backup completed successfully</li>
+    <li><img class="thumb" src="https://via.placeholder.com/24" alt="avatar"> John liked your comment</li>
+    <li>System: storage 80% full</li>
+    <li><img class="thumb" src="https://via.placeholder.com/24" alt="avatar"> Anna mentioned you in a task</li>
+  </ul>
+</div>
+
+<!-- SECTION 8: nested cards with duplicate structure for chained CSS + role filter -->
+<h2>8. Regional Inventory — Warehouse A</h2>
+<div class="card region" data-region="A">
+  <ul role="list">
+    <li>Widget X <span class="stock-in">In stock (30)</span></li>
+    <li>Widget Y <span class="stock-out">Out of stock</span></li>
+  </ul>
+</div>
+<h2>8b. Regional Inventory — Warehouse B</h2>
+<div class="card region" data-region="B">
+  <ul role="list">
+    <li>Widget X <span class="stock-out">Out of stock</span></li>
+    <li>Widget Y <span class="stock-in">In stock (5)</span></li>
+    <li>Widget Z <span class="stock-in">In stock (18)</span></li>
+  </ul>
+</div>
+
+</body>
+</html>
