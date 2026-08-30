@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CSS & XPath Locators Practice</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 950px; margin: 40px auto; padding: 0 20px; background: #0f1117; color: #e6e6e6; }
+  h1 { color: #7ac6ff; }
+  h2 { color: #ffd479; border-bottom: 1px solid #333; padding-bottom: 6px; margin-top: 50px; }
+  .card { background: #1a1d27; border: 1px solid #2c2f3a; border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+  ul { list-style: none; padding: 0; }
+  li { padding: 8px; border-bottom: 1px solid #2c2f3a; }
+  li:last-child { border-bottom: none; }
+  input, button, select { padding: 6px 10px; margin: 4px 0; border-radius: 5px; border: 1px solid #444; background: #22242e; color: #eee; }
+  button { background: #2d6cdf; border: none; cursor: pointer; }
+  .hidden { display: none; }
+  .box { display: inline-block; width: 40px; height: 40px; margin: 4px; text-align: center; line-height: 40px; border-radius: 4px; background: #2c2f3a; }
+  a { color: #7ac6ff; }
+  .breadcrumb span { margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<h1>CSS &amp; XPath Locators Practice</h1>
+
+<!-- 1. Basic id/class/name/attribute + combined -->
+<h2>1. Search Header</h2>
+<div class="card">
+  <form id="search-form">
+    <input type="text" id="search-box" class="search-input" name="q" placeholder="Search products...">
+    <button type="submit" id="search-btn" class="btn-primary">Search</button>
+  </form>
+</div>
+
+<!-- 2. Child vs descendant combinator -->
+<h2>2. Nested Form (child vs descendant)</h2>
+<div class="card">
+  <form id="profile-form">
+    <input type="text" name="direct-child" placeholder="I am a direct child of form">
+    <div class="wrapper">
+      <input type="text" name="nested-child" placeholder="I am nested two levels deep">
+    </div>
+  </form>
+</div>
+
+<!-- 3. Sibling combinators -->
+<h2>3. Radio Group (siblings)</h2>
+<div class="card">
+  <label for="plan-basic">Basic Plan</label>
+  <input type="radio" id="plan-basic" name="plan" value="basic">
+  <input type="radio" id="plan-pro" name="plan" value="pro">
+  <input type="radio" id="plan-premium" name="plan" value="premium">
+</div>
+
+<!-- 4. Product grid: contains, starts-with, ends-with, multiple classes -->
+<h2>4. Product Grid</h2>
+<div class="card">
+  <ul>
+    <li><h2 class="product-title item featured"><a href="/computer-accessories/mouse">Wireless Mouse</a></h2></li>
+    <li><h2 class="product-title item"><a href="/computer-accessories/keyboard">Mechanical Keyboard</a></h2></li>
+    <li><h2 class="product-title item featured"><a href="/build-your-own-pc">Build Your Own PC</a></h2></li>
+    <li><h2 class="product-title item"><a href="/build-custom-laptop">Build Custom Laptop</a></h2></li>
+    <li><h2 class="product-title item"><a href="/apparel/t-shirt">T-Shirt</a></h2></li>
+  </ul>
+</div>
+
+<!-- 5. Sidebar list: position() / last() -->
+<h2>5. My Account Sidebar</h2>
+<div class="card">
+  <div class="column my-account">
+    <ul>
+      <li>Orders</li>
+      <li>Addresses</li>
+      <li>Payment methods</li>
+      <li>Wishlist</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 6. Downloads list: ends-with -->
+<h2>6. Downloads</h2>
+<div class="card">
+  <ul>
+    <li><a href="/files/invoice-2026.pdf">Invoice</a></li>
+    <li><a href="/files/report.docx">Report</a></li>
+    <li><a href="/files/manual.pdf">User Manual</a></li>
+    <li><a href="/files/summary.csv">Summary</a></li>
+  </ul>
+</div>
+
+<!-- 7. Visibility + disabled attribute -->
+<h2>7. Visibility &amp; State</h2>
+<div class="card">
+  <button id="visible-btn">Visible Button</button>
+  <button id="hidden-btn" class="hidden">Hidden Button</button>
+  <input type="text" id="disabled-input" disabled placeholder="Disabled field">
+  <input type="text" id="required-input" required placeholder="Required field">
+</div>
+
+<!-- 8. Text-based nodes -->
+<h2>8. Auth Links</h2>
+<div class="card">
+  <a href="/register">Register</a>
+  <a href="/login">Login</a>
+  <a href="/login-help">Login Help</a>
+</div>
+
+<!-- 9. nth-child / nth-of-type -->
+<h2>9. Color Boxes</h2>
+<div class="card">
+  <div class="box-row">
+    <div class="box">1</div>
+    <div class="box">2</div>
+    <div class="box">3</div>
+    <div class="box">4</div>
+    <div class="box">5</div>
+  </div>
+</div>
+
+<!-- 10. Ancestor / following-sibling / preceding-sibling (breadcrumb + nested) -->
+<h2>10. Breadcrumb (XPath axes)</h2>
+<div class="card">
+  <div class="breadcrumb">
+    <span id="crumb-home">Home</span>
+    <span id="crumb-category">Electronics</span>
+    <span id="crumb-current">Laptops</span>
+  </div>
+  <div class="page-section" id="laptop-section">
+    <h3>Laptops</h3>
+    <p class="section-desc">Browse our laptop collection.</p>
+  </div>
+</div>
+
+<!-- 11. Multiple attribute predicate practice -->
+<h2>11. Multi-Attribute Elements</h2>
+<div class="card">
+  <button data-action="save" data-role="admin">Admin Save</button>
+  <button data-action="save" data-role="user">User Save</button>
+  <button data-action="delete" data-role="admin">Admin Delete</button>
+</div>
+
+<!-- 12. :not() pseudo-class -->
+<h2>12. Task List (:not())</h2>
+<div class="card">
+  <ul id="task-list">
+    <li class="task">Write report</li>
+    <li class="task archived">Old meeting notes</li>
+    <li class="task">Review PR</li>
+    <li class="task archived">Cancelled demo</li>
+    <li class="task">Update roadmap</li>
+  </ul>
+</div>
+
+<!-- 13. first-child / last-child / nth-last-child -->
+<h2>13. Menu Items</h2>
+<div class="card">
+  <ul id="menu-list">
+    <li>Home</li>
+    <li>Products</li>
+    <li>Pricing</li>
+    <li>About</li>
+    <li>Contact</li>
+  </ul>
+</div>
+
+<!-- 14. General sibling (~) -->
+<h2>14. Form Errors (general sibling)</h2>
+<div class="card">
+  <label id="username-label">Username</label>
+  <input type="text" id="username-input">
+  <span class="hint">3-16 characters</span>
+  <span class="error-msg">This field is required</span>
+</div>
+
+<!-- 15. Dynamically generated ids (real-world attribute wildcard case) -->
+<h2>15. Dynamic Component IDs</h2>
+<div class="card">
+  <button id="btn-8f3ac1-submit">Submit</button>
+  <button id="btn-9d2be7-cancel">Cancel</button>
+  <div id="modal-4471-container">Modal content</div>
+</div>
+
+<!-- 16. Whitespace-padded text (normalize-space) -->
+<h2>16. Padded Text (XPath normalize-space)</h2>
+<div class="card">
+  <p id="padded-text">   Order Confirmed   </p>
+</div>
+
+<!-- 17. Parent axis -->
+<h2>17. Parent Axis</h2>
+<div class="card" id="parent-axis-demo">
+  <div class="outer">
+    <span id="inner-span">Click target's parent needed</span>
+  </div>
+</div>
+
+<!-- 18. OR condition in XPath predicate -->
+<h2>18. Status Badges (XPath or())</h2>
+<div class="card">
+  <span class="status">Shipped</span>
+  <span class="status">Processing</span>
+  <span class="status">Delivered</span>
+  <span class="status">Cancelled</span>
+</div>
+
+</body>
+</html>
